@@ -1,0 +1,69 @@
+import java.util.Scanner;
+
+public class MainClass
+{
+	
+	private static Scanner scanner;
+	private static String infix = "", stack = "", postfix = "";
+	private static int i = 0, top = -1;
+
+	static int Operator_Precedance(char operator)
+	{
+		int precedance = 0;
+		
+		if (operator == '+' || operator == '-')
+		{
+			precedance = 5;
+		}
+		else if (operator == '*' || operator == '/')
+		{
+			precedance = 6;
+		}
+		
+		return precedance;
+	}
+
+	public static void main(String[] args)
+	{
+		System.out.print("Enter Infix:  ");
+		
+		scanner = new Scanner(System.in);
+		
+		infix = scanner.nextLine();
+		
+		for (i = 0; i < infix.length(); i++)
+		{
+			//System.out.println(infix.charAt(i));
+			
+			if(infix.charAt(i) >= 'A' && infix.charAt(i) <= 'Z' || infix.charAt(i) >= 'a' && infix.charAt(i) <= 'z')
+			{
+				postfix = postfix+infix.charAt(i);
+			}
+			else
+			{
+				if (stack == "" || Operator_Precedance(infix.charAt(i)) > Operator_Precedance(infix.charAt(i-1)))
+				{
+					//pop
+		 			postfix = postfix+stack.charAt(top);
+					top--;
+					i--;
+				}
+				else
+				{
+					//push
+					top++;
+					stack = stack+infix.charAt(i);
+				}
+			}
+			
+		}
+		
+		for (; top > -1; top--)
+		{
+			postfix = postfix+stack.charAt(top);
+		}
+		
+		System.out.println("\n\nPostfix:  "+postfix);
+		
+	}
+}
